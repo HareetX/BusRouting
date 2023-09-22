@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Cell" Collapsed="true">
+    <Position X="5.5" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAAAAAAABAAAAAAAAAAAAAAAAAAAAAgAA=</HashCode>
+      <FileName>ultis.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ComponentVertex">
+    <Position X="5.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAgAAAAAAAAQAAAAAAAAAAAAAAAAAQAAAAA=</HashCode>
+      <FileName>HananVertex.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Edge">
+    <Position X="1.75" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAACAAAAACAAAABAAAAAAgAAAAAAA=</HashCode>
+      <FileName>ultis.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HananCell" Collapsed="true">
+    <Position X="5.5" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAACAAAAAAAAAAIAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>HananCell.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HananEdge">
+    <Position X="1.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAACAEAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>HananEdge.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HananVertex">
+    <Position X="5.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAQAAAAAAA=</HashCode>
+      <FileName>HananVertex.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HorizontalEdge">
+    <Position X="2.75" Y="6.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAEAACAAAAAAAAAAIAAAAAAAABAAAAAAIAA=</HashCode>
+      <FileName>HananEdge.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Vertex">
+    <Position X="5.5" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAABAAAAAAAAIAAQAAAAAAAAAAAAAQAAAAA=</HashCode>
+      <FileName>ultis.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VerticalEdge">
+    <Position X="0.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAACAAABAAAAAAAAAAEAAAABAAAAAAICA=</HashCode>
+      <FileName>HananEdge.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Microsoft YaHei UI" Size="9" />
+</ClassDiagram>
