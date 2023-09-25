@@ -42,9 +42,11 @@ public:
 
 	int capacity;
 
-	vector<RoutingEdge> adjacent_edges;
+	vector<RoutingEdge*> adjacent_edges;
 
 	EdgeType edge_type;
+
+	vector<Vertex*> inner_center_vertexs;
 
 	HananEdge* dynamic_graph_parent;
 	HananEdge* dynamic_graph_lchild;

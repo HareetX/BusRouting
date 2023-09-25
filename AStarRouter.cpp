@@ -57,11 +57,11 @@ void AStarRouter::a_star_router(HananEdge* start_edge, HananEdge* end_edge, vect
 		}
 		for (auto& routing_edge : current->edge->adjacent_edges)
 		{
-			if (!closed_set.empty() and closed_set.back()->edge == routing_edge.adjvex)
+			if (!closed_set.empty() and closed_set.back()->edge == routing_edge->adjvex)
 			{
 				continue;
 			}
-			AStarNode* neighbor = new AStarNode(routing_edge.adjvex, (current->g + routing_edge.weight), current);
+			AStarNode* neighbor = new AStarNode(routing_edge->adjvex, (current->g + routing_edge->weight), current);
 			open_set.push(neighbor);
 		}
 

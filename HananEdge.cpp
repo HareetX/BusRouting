@@ -67,76 +67,76 @@ void HorizontalEdge::initial_adjacent_edges()
 	{
 		if (!(this->is_extended_adjvex((HananEdge*)(this->vertexs[0]->edges[0]))))
 		{
-			RoutingEdge adjacent_edge = { (VerticalEdge*)(this->vertexs[0]->edges[0]),1 };
+			RoutingEdge* adjacent_edge = new RoutingEdge((HananEdge*)(this->vertexs[0]->edges[0]), 1);
 			this->adjacent_edges.push_back(adjacent_edge);
 
-			adjacent_edge = RoutingEdge(this, 1);
-			((VerticalEdge*)(this->vertexs[0]->edges[0]))->adjacent_edges.push_back(adjacent_edge);
+			adjacent_edge = new RoutingEdge(this, 1);
+			((HananEdge*)(this->vertexs[0]->edges[0]))->adjacent_edges.push_back(adjacent_edge);
 
-			this->adjacent_edges.back().inverse_edge = &((VerticalEdge*)(this->vertexs[0]->edges[0]))->adjacent_edges.back();
-			((VerticalEdge*)(this->vertexs[0]->edges[0]))->adjacent_edges.back().inverse_edge = &this->adjacent_edges.back();
+			this->adjacent_edges.back()->inverse_edge = ((HananEdge*)(this->vertexs[0]->edges[0]))->adjacent_edges.back();
+			((HananEdge*)(this->vertexs[0]->edges[0]))->adjacent_edges.back()->inverse_edge = this->adjacent_edges.back();
 		}
 		
 		if (!(this->is_extended_adjvex((HananEdge*)(this->vertexs[1]->edges[0]))))
 		{
-			RoutingEdge adjacent_edge = { (VerticalEdge*)(this->vertexs[1]->edges[0]), 1 };
+			RoutingEdge* adjacent_edge = new RoutingEdge((HananEdge*)(this->vertexs[1]->edges[0]), 1);
 			this->adjacent_edges.push_back(adjacent_edge);
 
-			adjacent_edge = RoutingEdge(this, 1);
-			((VerticalEdge*)(this->vertexs[1]->edges[0]))->adjacent_edges.push_back(adjacent_edge);
+			adjacent_edge = new RoutingEdge(this, 1);
+			((HananEdge*)(this->vertexs[1]->edges[0]))->adjacent_edges.push_back(adjacent_edge);
 
-			this->adjacent_edges.back().inverse_edge = &((VerticalEdge*)(this->vertexs[1]->edges[0]))->adjacent_edges.back();
-			((VerticalEdge*)(this->vertexs[1]->edges[0]))->adjacent_edges.back().inverse_edge = &this->adjacent_edges.back();
+			this->adjacent_edges.back()->inverse_edge = ((HananEdge*)(this->vertexs[1]->edges[0]))->adjacent_edges.back();
+			((HananEdge*)(this->vertexs[1]->edges[0]))->adjacent_edges.back()->inverse_edge = this->adjacent_edges.back();
 		}
 		
 		if (!(this->is_extended_adjvex((HananEdge*)(this->vertexs[0]->edges[0]->vertexs[0]->edges[1]))))
 		{
-			RoutingEdge adjacent_edge = { (HorizontalEdge*)(this->vertexs[0]->edges[0]->vertexs[0]->edges[1]), 1 };
+			RoutingEdge* adjacent_edge = new RoutingEdge((HananEdge*)(this->vertexs[0]->edges[0]->vertexs[0]->edges[1]), 1);
 			this->adjacent_edges.push_back(adjacent_edge);
 
-			adjacent_edge = RoutingEdge(this, 1);
-			((HorizontalEdge*)(this->vertexs[0]->edges[0]->vertexs[0]->edges[1]))->adjacent_edges.push_back(adjacent_edge);
+			adjacent_edge = new RoutingEdge(this, 1);
+			((HananEdge*)(this->vertexs[0]->edges[0]->vertexs[0]->edges[1]))->adjacent_edges.push_back(adjacent_edge);
 
-			this->adjacent_edges.back().inverse_edge = &((HorizontalEdge*)(this->vertexs[0]->edges[0]->vertexs[0]->edges[1]))->adjacent_edges.back();
-			((HorizontalEdge*)(this->vertexs[0]->edges[0]->vertexs[0]->edges[1]))->adjacent_edges.back().inverse_edge = &this->adjacent_edges.back();
+			this->adjacent_edges.back()->inverse_edge = ((HananEdge*)(this->vertexs[0]->edges[0]->vertexs[0]->edges[1]))->adjacent_edges.back();
+			((HananEdge*)(this->vertexs[0]->edges[0]->vertexs[0]->edges[1]))->adjacent_edges.back()->inverse_edge = this->adjacent_edges.back();
 		}
 	}
 	if ((this->vertexs[0]->edges[2] and this->vertexs[1]->edges[2]) and (this->edge_type != ComponentBoundary or ((HananEdge*)(this->vertexs[0]->edges[2]))->edge_type != ComponentBoundary))
 	{
 		if (!(this->is_extended_adjvex((HananEdge*)(this->vertexs[0]->edges[2]))))
 		{
-			RoutingEdge adjacent_edge = { (VerticalEdge*)(this->vertexs[0]->edges[2]), 1 };
+			RoutingEdge* adjacent_edge = new RoutingEdge((HananEdge*)(this->vertexs[0]->edges[2]), 1);
 			this->adjacent_edges.push_back(adjacent_edge);
 
-			adjacent_edge = RoutingEdge(this, 1);
-			((VerticalEdge*)(this->vertexs[0]->edges[2]))->adjacent_edges.push_back(adjacent_edge);
+			adjacent_edge = new RoutingEdge(this, 1);
+			((HananEdge*)(this->vertexs[0]->edges[2]))->adjacent_edges.push_back(adjacent_edge);
 
-			this->adjacent_edges.back().inverse_edge = &((VerticalEdge*)(this->vertexs[0]->edges[2]))->adjacent_edges.back();
-			((VerticalEdge*)(this->vertexs[0]->edges[2]))->adjacent_edges.back().inverse_edge = &this->adjacent_edges.back();
+			this->adjacent_edges.back()->inverse_edge = ((HananEdge*)(this->vertexs[0]->edges[2]))->adjacent_edges.back();
+			((HananEdge*)(this->vertexs[0]->edges[2]))->adjacent_edges.back()->inverse_edge = this->adjacent_edges.back();
 		}
 
 		if (!(this->is_extended_adjvex((HananEdge*)(this->vertexs[1]->edges[2]))))
 		{
-			RoutingEdge adjacent_edge = { (VerticalEdge*)(this->vertexs[1]->edges[2]), 1 };
+			RoutingEdge* adjacent_edge = new RoutingEdge((HananEdge*)(this->vertexs[1]->edges[2]), 1);
 			this->adjacent_edges.push_back(adjacent_edge);
 
-			adjacent_edge = RoutingEdge(this, 1);
-			((VerticalEdge*)(this->vertexs[1]->edges[2]))->adjacent_edges.push_back(adjacent_edge);
+			adjacent_edge = new RoutingEdge(this, 1);
+			((HananEdge*)(this->vertexs[1]->edges[2]))->adjacent_edges.push_back(adjacent_edge);
 
-			this->adjacent_edges.back().inverse_edge = &((VerticalEdge*)(this->vertexs[1]->edges[2]))->adjacent_edges.back();
-			((VerticalEdge*)(this->vertexs[1]->edges[2]))->adjacent_edges.back().inverse_edge = &this->adjacent_edges.back();
+			this->adjacent_edges.back()->inverse_edge = ((HananEdge*)(this->vertexs[1]->edges[2]))->adjacent_edges.back();
+			((HananEdge*)(this->vertexs[1]->edges[2]))->adjacent_edges.back()->inverse_edge = this->adjacent_edges.back();
 		}
 
 		if (!(this->is_extended_adjvex((HananEdge*)(this->vertexs[0]->edges[2]->vertexs[1]->edges[1]))))
 		{
-			RoutingEdge adjacent_edge = { (HorizontalEdge*)(this->vertexs[0]->edges[2]->vertexs[1]->edges[1]), 1 };
+			RoutingEdge* adjacent_edge = new RoutingEdge((HananEdge*)(this->vertexs[0]->edges[2]->vertexs[1]->edges[1]), 1);
 			this->adjacent_edges.push_back(adjacent_edge);
 
-			adjacent_edge = RoutingEdge(this, 1);
-			((HorizontalEdge*)(this->vertexs[0]->edges[2]->vertexs[1]->edges[1]))->adjacent_edges.push_back(adjacent_edge);
+			adjacent_edge = new RoutingEdge(this, 1);
+			((HananEdge*)(this->vertexs[0]->edges[2]->vertexs[1]->edges[1]))->adjacent_edges.push_back(adjacent_edge);
 
-			this->adjacent_edges.back().inverse_edge = &((HorizontalEdge*)(this->vertexs[0]->edges[2]->vertexs[1]->edges[1]))->adjacent_edges.back();
-			((HorizontalEdge*)(this->vertexs[0]->edges[2]->vertexs[1]->edges[1]))->adjacent_edges.back().inverse_edge = &this->adjacent_edges.back();
+			this->adjacent_edges.back()->inverse_edge = ((HananEdge*)(this->vertexs[0]->edges[2]->vertexs[1]->edges[1]))->adjacent_edges.back();
+			((HananEdge*)(this->vertexs[0]->edges[2]->vertexs[1]->edges[1]))->adjacent_edges.back()->inverse_edge = this->adjacent_edges.back();
 		}
 	}
 }
@@ -188,76 +188,76 @@ void VerticalEdge::initial_adjacent_edges()
 	{
 		if (!(this->is_extended_adjvex((HananEdge*)(this->vertexs[0]->edges[1]))))
 		{
-			RoutingEdge adjacent_edge = { (HorizontalEdge*)(this->vertexs[0]->edges[1]), 1 };
+			RoutingEdge* adjacent_edge = new RoutingEdge((HananEdge*)(this->vertexs[0]->edges[1]), 1);
 			this->adjacent_edges.push_back(adjacent_edge);
 
-			adjacent_edge = RoutingEdge(this, 1);
-			((HorizontalEdge*)(this->vertexs[0]->edges[1]))->adjacent_edges.push_back(adjacent_edge);
+			adjacent_edge = new RoutingEdge(this, 1);
+			((HananEdge*)(this->vertexs[0]->edges[1]))->adjacent_edges.push_back(adjacent_edge);
 
-			this->adjacent_edges.back().inverse_edge = &((HorizontalEdge*)(this->vertexs[0]->edges[1]))->adjacent_edges.back();
-			((HorizontalEdge*)(this->vertexs[0]->edges[1]))->adjacent_edges.back().inverse_edge = &this->adjacent_edges.back();
+			this->adjacent_edges.back()->inverse_edge = ((HananEdge*)(this->vertexs[0]->edges[1]))->adjacent_edges.back();
+			((HananEdge*)(this->vertexs[0]->edges[1]))->adjacent_edges.back()->inverse_edge = this->adjacent_edges.back();
 		}
 
 		if (!(this->is_extended_adjvex((HananEdge*)(this->vertexs[1]->edges[1]))))
 		{
-			RoutingEdge adjacent_edge = { (HorizontalEdge*)(this->vertexs[1]->edges[1]), 1 };
+			RoutingEdge* adjacent_edge = new RoutingEdge((HananEdge*)(this->vertexs[1]->edges[1]), 1);
 			this->adjacent_edges.push_back(adjacent_edge);
 
-			adjacent_edge = RoutingEdge(this, 1);
-			((HorizontalEdge*)(this->vertexs[1]->edges[1]))->adjacent_edges.push_back(adjacent_edge);
+			adjacent_edge = new RoutingEdge(this, 1);
+			((HananEdge*)(this->vertexs[1]->edges[1]))->adjacent_edges.push_back(adjacent_edge);
 
-			this->adjacent_edges.back().inverse_edge = &((HorizontalEdge*)(this->vertexs[1]->edges[1]))->adjacent_edges.back();
-			((HorizontalEdge*)(this->vertexs[1]->edges[1]))->adjacent_edges.back().inverse_edge = &this->adjacent_edges.back();
+			this->adjacent_edges.back()->inverse_edge = ((HananEdge*)(this->vertexs[1]->edges[1]))->adjacent_edges.back();
+			((HananEdge*)(this->vertexs[1]->edges[1]))->adjacent_edges.back()->inverse_edge = this->adjacent_edges.back();
 		}
 
 		if (!(this->is_extended_adjvex((HananEdge*)(this->vertexs[0]->edges[1]->vertexs[1]->edges[2]))))
 		{
-			RoutingEdge adjacent_edge = { (VerticalEdge*)(this->vertexs[0]->edges[1]->vertexs[1]->edges[2]), 1 };
+			RoutingEdge* adjacent_edge = new RoutingEdge((HananEdge*)(this->vertexs[0]->edges[1]->vertexs[1]->edges[2]), 1);
 			this->adjacent_edges.push_back(adjacent_edge);
 
-			adjacent_edge = RoutingEdge(this, 1);
-			((VerticalEdge*)(this->vertexs[0]->edges[1]->vertexs[1]->edges[2]))->adjacent_edges.push_back(adjacent_edge);
+			adjacent_edge = new RoutingEdge(this, 1);
+			((HananEdge*)(this->vertexs[0]->edges[1]->vertexs[1]->edges[2]))->adjacent_edges.push_back(adjacent_edge);
 
-			this->adjacent_edges.back().inverse_edge = &((VerticalEdge*)(this->vertexs[0]->edges[1]->vertexs[1]->edges[2]))->adjacent_edges.back();
-			((VerticalEdge*)(this->vertexs[0]->edges[1]->vertexs[1]->edges[2]))->adjacent_edges.back().inverse_edge = &this->adjacent_edges.back();
+			this->adjacent_edges.back()->inverse_edge = ((HananEdge*)(this->vertexs[0]->edges[1]->vertexs[1]->edges[2]))->adjacent_edges.back();
+			((HananEdge*)(this->vertexs[0]->edges[1]->vertexs[1]->edges[2]))->adjacent_edges.back()->inverse_edge = this->adjacent_edges.back();
 		}
 	}
 	if ((this->vertexs[0]->edges[3] and this->vertexs[1]->edges[3]) and (this->edge_type != ComponentBoundary or ((HananEdge*)(this->vertexs[0]->edges[3]))->edge_type != ComponentBoundary))
 	{
 		if (!(this->is_extended_adjvex((HananEdge*)(this->vertexs[0]->edges[3]))))
 		{
-			RoutingEdge adjacent_edge = { (HorizontalEdge*)(this->vertexs[0]->edges[3]), 1 };
+			RoutingEdge* adjacent_edge = new RoutingEdge((HananEdge*)(this->vertexs[0]->edges[3]), 1);
 			this->adjacent_edges.push_back(adjacent_edge);
 
-			adjacent_edge = RoutingEdge(this, 1);
-			((HorizontalEdge*)(this->vertexs[0]->edges[3]))->adjacent_edges.push_back(adjacent_edge);
+			adjacent_edge = new RoutingEdge(this, 1);
+			((HananEdge*)(this->vertexs[0]->edges[3]))->adjacent_edges.push_back(adjacent_edge);
 
-			this->adjacent_edges.back().inverse_edge = &((HorizontalEdge*)(this->vertexs[0]->edges[3]))->adjacent_edges.back();
-			((HorizontalEdge*)(this->vertexs[0]->edges[3]))->adjacent_edges.back().inverse_edge = &this->adjacent_edges.back();
+			this->adjacent_edges.back()->inverse_edge = ((HananEdge*)(this->vertexs[0]->edges[3]))->adjacent_edges.back();
+			((HananEdge*)(this->vertexs[0]->edges[3]))->adjacent_edges.back()->inverse_edge = this->adjacent_edges.back();
 		}
 
 		if (!(this->is_extended_adjvex((HananEdge*)(this->vertexs[1]->edges[3]))))
 		{
-			RoutingEdge adjacent_edge = { (HorizontalEdge*)(this->vertexs[1]->edges[3]), 1 };
+			RoutingEdge* adjacent_edge = new RoutingEdge((HananEdge*)(this->vertexs[1]->edges[3]), 1);
 			this->adjacent_edges.push_back(adjacent_edge);
 
-			adjacent_edge = RoutingEdge(this, 1);
-			((HorizontalEdge*)(this->vertexs[1]->edges[3]))->adjacent_edges.push_back(adjacent_edge);
+			adjacent_edge = new RoutingEdge(this, 1);
+			((HananEdge*)(this->vertexs[1]->edges[3]))->adjacent_edges.push_back(adjacent_edge);
 
-			this->adjacent_edges.back().inverse_edge = &((HorizontalEdge*)(this->vertexs[1]->edges[3]))->adjacent_edges.back();
-			((HorizontalEdge*)(this->vertexs[1]->edges[3]))->adjacent_edges.back().inverse_edge = &this->adjacent_edges.back();
+			this->adjacent_edges.back()->inverse_edge = ((HananEdge*)(this->vertexs[1]->edges[3]))->adjacent_edges.back();
+			((HananEdge*)(this->vertexs[1]->edges[3]))->adjacent_edges.back()->inverse_edge = this->adjacent_edges.back();
 		}
 
 		if (!(this->is_extended_adjvex((HananEdge*)(this->vertexs[0]->edges[3]->vertexs[0]->edges[2]))))
 		{
-			RoutingEdge adjacent_edge = { (VerticalEdge*)(this->vertexs[0]->edges[3]->vertexs[0]->edges[2]), 1 };
+			RoutingEdge* adjacent_edge = new RoutingEdge((HananEdge*)(this->vertexs[0]->edges[3]->vertexs[0]->edges[2]), 1);
 			this->adjacent_edges.push_back(adjacent_edge);
 
-			adjacent_edge = RoutingEdge(this, 1);
-			((VerticalEdge*)(this->vertexs[0]->edges[3]->vertexs[0]->edges[2]))->adjacent_edges.push_back(adjacent_edge);
+			adjacent_edge = new RoutingEdge(this, 1);
+			((HananEdge*)(this->vertexs[0]->edges[3]->vertexs[0]->edges[2]))->adjacent_edges.push_back(adjacent_edge);
 
-			this->adjacent_edges.back().inverse_edge = &((VerticalEdge*)(this->vertexs[0]->edges[3]->vertexs[0]->edges[2]))->adjacent_edges.back();
-			((VerticalEdge*)(this->vertexs[0]->edges[3]->vertexs[0]->edges[2]))->adjacent_edges.back().inverse_edge = &this->adjacent_edges.back();
+			this->adjacent_edges.back()->inverse_edge = ((HananEdge*)(this->vertexs[0]->edges[3]->vertexs[0]->edges[2]))->adjacent_edges.back();
+			((HananEdge*)(this->vertexs[0]->edges[3]->vertexs[0]->edges[2]))->adjacent_edges.back()->inverse_edge = this->adjacent_edges.back();
 		}
 	}
 }
@@ -274,7 +274,7 @@ bool HananEdge::is_extended_adjvex(HananEdge* edge)
 	bool flag = false;
 	for (auto& adjacent_edge : this->adjacent_edges)
 	{
-		if (adjacent_edge.adjvex == edge)
+		if (adjacent_edge->adjvex == edge)
 		{
 			flag = true;
 			break;
@@ -295,29 +295,62 @@ bool HananEdge::is_root_node()
 
 void HananEdge::split2child()
 {
-	Vertex center_vertex = { (this->vertexs[0]->position.x + this->vertexs[1]->position.x) / (float)2.0, (this->vertexs[0]->position.y + this->vertexs[1]->position.y) / (float)2.0 };
-	HananEdge* lchild = new HananEdge(this->vertexs[0], &center_vertex, this->capacity, this->edge_type, this);
-	HananEdge* rchild = new HananEdge(&center_vertex, this->vertexs[1], this->capacity, this->edge_type, this);
+	Vertex* center_vertex = new Vertex((this->vertexs[0]->position.x + this->vertexs[1]->position.x) / (float)2.0, (this->vertexs[0]->position.y + this->vertexs[1]->position.y) / (float)2.0);
+	this->inner_center_vertexs.push_back(center_vertex);
+
+	HananEdge* lchild = new HananEdge(this->vertexs[0], center_vertex, this->capacity, this->edge_type, this);
+	HananEdge* rchild = new HananEdge(center_vertex, this->vertexs[1], this->capacity, this->edge_type, this);
 	
 	//delete adjacent edges : edges -> this
 	for (auto& this2edge : this->adjacent_edges)
   	{
-		vector<RoutingEdge>::iterator it = this2edge.adjvex->adjacent_edges.begin();
-		while (it != this2edge.adjvex->adjacent_edges.end())
+		vector<RoutingEdge*>::iterator it = this2edge->adjvex->adjacent_edges.begin();
+		while (it != this2edge->adjvex->adjacent_edges.end())
 		{
-			if ((*it).adjvex != this)
+			// find the adjacent edge : edge -> this
+			if ((*it)->adjvex != this)
 			{
 				it++;
 				continue;
 			}
-			// find the adjacent edge : edge -> this
-			it = this2edge.adjvex->adjacent_edges.erase(it);
+			// delete the adjacent edge : edge -> this
+			RoutingEdge* tmp = *it;
+			delete tmp;
+			it = this2edge->adjvex->adjacent_edges.erase(it);
 			break;
 		}
 	}
 	// add adjacent edges : lchild -> edges & edges -> lchild
-	
-	// add adjacent edges : rchild -> edges & edges -> rchild
+	for (auto& this2edge : this->adjacent_edges)
+	{
+		RoutingEdge* adjacent_edge = new RoutingEdge(this2edge->adjvex, 1);
+		lchild->adjacent_edges.push_back(adjacent_edge);
 
+		adjacent_edge = new RoutingEdge(lchild, 1);
+		this2edge->adjvex->adjacent_edges.push_back(adjacent_edge);
+
+		lchild->adjacent_edges.back()->inverse_edge = this2edge->adjvex->adjacent_edges.back();
+		this2edge->adjvex->adjacent_edges.back()->inverse_edge = lchild->adjacent_edges.back();
+	}
+	// add adjacent edges : rchild -> edges & edges -> rchild
+	for (auto& this2edge : this->adjacent_edges)
+	{
+		RoutingEdge* adjacent_edge = new RoutingEdge(this2edge->adjvex, 1);
+		rchild->adjacent_edges.push_back(adjacent_edge);
+
+		adjacent_edge = new RoutingEdge(rchild, 1);
+		this2edge->adjvex->adjacent_edges.push_back(adjacent_edge);
+
+		rchild->adjacent_edges.back()->inverse_edge = this2edge->adjvex->adjacent_edges.back();
+		this2edge->adjvex->adjacent_edges.back()->inverse_edge = rchild->adjacent_edges.back();
+	}
 	// delete adjacent edges : this -> edges
+	for (auto& adjacent_edge : adjacent_edges)
+	{
+		delete adjacent_edge;
+	}
+	this->adjacent_edges.clear();
+
+	this->dynamic_graph_lchild = lchild;
+	this->dynamic_graph_rchild = rchild;
 }

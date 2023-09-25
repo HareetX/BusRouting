@@ -532,6 +532,15 @@ void InitialRoutingGraph()
 	}
 }
 
+void UpdateRoutingGraph(vector<HananEdge*>& path)
+{
+	// Generate new routing graph that does not take weight into account
+	for (auto& edge : path)
+	{
+		edge->split2child();
+	}
+}
+
 void PrintHananGrid()
 {
 	// Print HorizontalEdge
@@ -638,14 +647,34 @@ void PrintRoutingGraph()
 				plot::plot(x, y, "r");
 			}
 
-			// draw the Routing Graph edge
-			x[0] = (edge->vertexs[0]->position.x + edge->vertexs[1]->position.x) / 2.0;
-			y[0] = (edge->vertexs[0]->position.y + edge->vertexs[1]->position.y) / 2.0;
-			for (auto& routing_edge : edge->adjacent_edges)
-			{
-				x[1] = (routing_edge.adjvex->vertexs[0]->position.x + routing_edge.adjvex->vertexs[1]->position.x) / 2.0;
-				y[1] = (routing_edge.adjvex->vertexs[0]->position.y + routing_edge.adjvex->vertexs[1]->position.y) / 2.0;
-				plot::plot(x, y, "g");
+			/*
+			* draw the Routing Graph edge
+			* use pre-order traversal to find the leaf node
+			*/
+			if (edge == NULL) return;
+			stack<HananEdge*> s;
+			s.push(edge);
+			while (!s.empty()) {
+				HananEdge* nd = s.top();
+
+				// visit(nd)
+				if (nd->is_leaf_node())
+				{
+					x[0] = (nd->vertexs[0]->position.x + nd->vertexs[1]->position.x) / 2.0;
+					y[0] = (nd->vertexs[0]->position.y + nd->vertexs[1]->position.y) / 2.0;
+					for (auto& routing_edge : nd->adjacent_edges)
+					{
+						x[1] = (routing_edge->adjvex->vertexs[0]->position.x + routing_edge->adjvex->vertexs[1]->position.x) / 2.0;
+						y[1] = (routing_edge->adjvex->vertexs[0]->position.y + routing_edge->adjvex->vertexs[1]->position.y) / 2.0;
+						plot::plot(x, y, "g");
+					}
+				}
+
+				s.pop();
+				if (nd->dynamic_graph_rchild != NULL)
+					s.push(nd->dynamic_graph_rchild);
+				if (nd->dynamic_graph_lchild != NULL)
+					s.push(nd->dynamic_graph_lchild);
 			}
 		}
 	}
@@ -671,8 +700,8 @@ void PrintRoutingGraph()
 			y[0] = (edge->vertexs[0]->position.y + edge->vertexs[1]->position.y) / 2.0;
 			for (auto& routing_edge : edge->adjacent_edges)
 			{
-				x[1] = (routing_edge.adjvex->vertexs[0]->position.x + routing_edge.adjvex->vertexs[1]->position.x) / 2.0;
-				y[1] = (routing_edge.adjvex->vertexs[0]->position.y + routing_edge.adjvex->vertexs[1]->position.y) / 2.0;
+				x[1] = (routing_edge->adjvex->vertexs[0]->position.x + routing_edge->adjvex->vertexs[1]->position.x) / 2.0;
+				y[1] = (routing_edge->adjvex->vertexs[0]->position.y + routing_edge->adjvex->vertexs[1]->position.y) / 2.0;
 				plot::plot(x, y, "g");
 			}
 		}
@@ -701,14 +730,34 @@ void printRoutingPath(vector<HananEdge*>& path)
 				plot::plot(x, y, "r");
 			}
 
-			// draw the Routing Graph edge
-			x[0] = (edge->vertexs[0]->position.x + edge->vertexs[1]->position.x) / 2.0;
-			y[0] = (edge->vertexs[0]->position.y + edge->vertexs[1]->position.y) / 2.0;
-			for (auto& routing_edge : edge->adjacent_edges)
-			{
-				x[1] = (routing_edge.adjvex->vertexs[0]->position.x + routing_edge.adjvex->vertexs[1]->position.x) / 2.0;
-				y[1] = (routing_edge.adjvex->vertexs[0]->position.y + routing_edge.adjvex->vertexs[1]->position.y) / 2.0;
-				plot::plot(x, y, "g");
+			/*
+			* draw the Routing Graph edge
+			* use pre-order traversal to find the leaf node
+			*/
+			if (edge == NULL) return;
+			stack<HananEdge*> s;
+			s.push(edge);
+			while (!s.empty()) {
+				HananEdge* nd = s.top();
+				
+				// visit(nd)
+				if (nd->is_leaf_node())
+				{
+					x[0] = (nd->vertexs[0]->position.x + nd->vertexs[1]->position.x) / 2.0;
+					y[0] = (nd->vertexs[0]->position.y + nd->vertexs[1]->position.y) / 2.0;
+					for (auto& routing_edge : nd->adjacent_edges)
+					{
+						x[1] = (routing_edge->adjvex->vertexs[0]->position.x + routing_edge->adjvex->vertexs[1]->position.x) / 2.0;
+						y[1] = (routing_edge->adjvex->vertexs[0]->position.y + routing_edge->adjvex->vertexs[1]->position.y) / 2.0;
+						plot::plot(x, y, "g");
+					}
+				}
+
+				s.pop();
+				if (nd->dynamic_graph_rchild != NULL)
+					s.push(nd->dynamic_graph_rchild);
+				if (nd->dynamic_graph_lchild != NULL)
+					s.push(nd->dynamic_graph_lchild);
 			}
 		}
 	}
@@ -734,13 +783,13 @@ void printRoutingPath(vector<HananEdge*>& path)
 			y[0] = (edge->vertexs[0]->position.y + edge->vertexs[1]->position.y) / 2.0;
 			for (auto& routing_edge : edge->adjacent_edges)
 			{
-				x[1] = (routing_edge.adjvex->vertexs[0]->position.x + routing_edge.adjvex->vertexs[1]->position.x) / 2.0;
-				y[1] = (routing_edge.adjvex->vertexs[0]->position.y + routing_edge.adjvex->vertexs[1]->position.y) / 2.0;
+				x[1] = (routing_edge->adjvex->vertexs[0]->position.x + routing_edge->adjvex->vertexs[1]->position.x) / 2.0;
+				y[1] = (routing_edge->adjvex->vertexs[0]->position.y + routing_edge->adjvex->vertexs[1]->position.y) / 2.0;
 				plot::plot(x, y, "g");
 			}
 		}
 	}
-
+	
 	// draw the Routing path
 	for (auto path_node : path)
 	{
@@ -797,6 +846,9 @@ int main()
 	vector<HananEdge*> path;
 	router.a_star_router(VerticalEdgeMap.at(7)[5], HorizontalEdgeMap.at(16)[2], path);
 
+	UpdateRoutingGraph(path);
+
+	//PrintRoutingGraph();
 	printRoutingPath(path);
 
 	return 0;
