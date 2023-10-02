@@ -39,7 +39,7 @@ public:
 	~Edge() {};
 	
 	Vertex* vertexs[2];
-	Cell* cells[2];
+	Cell* cells[2];  // 0 -> 1 : from small to large
 
 private:
 };
@@ -51,7 +51,7 @@ public:
 	Cell(Edge* edge_1, Edge* edge_2, Edge* edge_3, Edge* edge_4) { edges[0] = edge_1; edges[1] = edge_2; edges[2] = edge_3; edges[3] = edge_4; };
 	~Cell() {};
 	
-	Edge* edges[4];
+	Edge* edges[4];  // 0 - up ; 1 - right ; 2 - down ; 3 - left
 
 private:
 };

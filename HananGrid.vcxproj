@@ -146,6 +146,7 @@
     <ClInclude Include="AStarRouter.h" />
     <ClInclude Include="HananCell.h" />
     <ClInclude Include="HananEdge.h" />
+    <ClInclude Include="HananRoutingGraph.h" />
     <ClInclude Include="HananVertex.h" />
     <ClInclude Include="ultis.h" />
   </ItemGroup>
@@ -153,6 +154,7 @@
     <ClCompile Include="AStarRouter.cpp" />
     <ClCompile Include="HananCell.cpp" />
     <ClCompile Include="HananEdge.cpp" />
+    <ClCompile Include="HananRoutingGraph.cpp" />
     <ClCompile Include="HananVertex.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ultis.cpp" />

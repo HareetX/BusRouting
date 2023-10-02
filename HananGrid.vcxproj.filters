@@ -30,6 +30,9 @@
     <ClInclude Include="AStarRouter.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="HananRoutingGraph.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="HananVertex.cpp">
@@ -48,6 +51,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="AStarRouter.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="HananRoutingGraph.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
