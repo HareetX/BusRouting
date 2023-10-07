@@ -36,11 +36,13 @@ public:
 
 	vector<HananCell*> CellList;
 
-	void updateRoutingGraph(vector<HananEdge*>& path);
+	vector<vector<HananEdge*>> pathList;
+
+	void updateRoutingGraph(vector<HananEdge*>& path, int bus_id);
 
 	void printHananGrid();
 	void printRoutingGraph();
-	void printRoutingPath(vector<HananEdge*>& path);
+	void printRoutingPath();
 
 private:
 	// Initial the Vertex and Edge of the Board and Component
@@ -57,5 +59,7 @@ private:
 	void initialAdjacentEdgeV(VerticalEdge* edge);
 
 	void generateHananRoutingGraph();
+
+	HananCell* findHananCell(HananEdge* edge1, HananEdge* edge2);
 };
 

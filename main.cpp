@@ -33,13 +33,23 @@ int main()
 	// Find the path by A* Searching
 	AStarRouter router;
 	vector<HananEdge*> path;
+
 	router.a_star_router(hanan_routing_graph.VerticalEdgeMap.at(7)[5], hanan_routing_graph.HorizontalEdgeMap.at(16)[2], path);
 
 	// update the path to the Routing Graph dynamically
-	hanan_routing_graph.updateRoutingGraph(path);
+	hanan_routing_graph.updateRoutingGraph(path, 0);
 
 	//Print Routing Graph with the path;
-	hanan_routing_graph.printRoutingPath(path);
+	hanan_routing_graph.printRoutingPath();
+
+	// Find the path by A* Searching
+	router.a_star_router(hanan_routing_graph.VerticalEdgeMap.at(21)[5], hanan_routing_graph.HorizontalEdgeMap.at(16)[2]->dynamic_graph_rchild, path);
+
+	// update the path to the Routing Graph dynamically
+	hanan_routing_graph.updateRoutingGraph(path, 0);
+
+	//Print Routing Graph with the path;
+	hanan_routing_graph.printRoutingPath();
 
 	return 0;
 }

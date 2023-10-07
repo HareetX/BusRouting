@@ -5,13 +5,14 @@
 class AStarNode
 {
 public:
-	AStarNode(HananEdge* edge, float g);
-	AStarNode(HananEdge* edge, float g, AStarNode* parent);
+	AStarNode(HananEdge* edge, float g, float h);
+	AStarNode(HananEdge* edge, float g, float h, AStarNode* parent);
 	~AStarNode() {};
 
 	HananEdge* edge;
 
 	float g;
+	float h;
 	float f;
 
 	AStarNode* parent;

@@ -9,7 +9,9 @@ public:
 	~RoutingArea() {};
 
 	vector<HananEdge*> contain_edges;
-	vector<RoutingEdge*> contain_routing_edges;
+	//vector<RoutingEdge*> contain_routing_edges;
+
+	bool is_inner_edge(HananEdge* edge);
 };
 
 class HananCell : public Cell
@@ -19,5 +21,9 @@ public:
 	~HananCell() {};
 
 	vector<RoutingArea*> routing_area_list;
+
+	vector<pair<Line, int>> path_line;
+
+	RoutingArea* current_routing_area(HananEdge* edge);
 };
 

@@ -3,6 +3,7 @@
 #include <vector>
 //#include <unordered_map>
 #include <map>
+#include <stack>
 using namespace std;
 
 typedef struct
@@ -55,3 +56,41 @@ public:
 
 private:
 };
+
+
+class Line
+{
+public:
+	float xa;
+	float ya;
+	float xb;
+	float yb;
+	Line(float xa, float ya, float xb, float yb) {
+		this->xa = xa;
+		this->ya = ya;
+		this->xb = xb;
+		this->yb = yb;
+	};
+	Line(Position a, Position b) {
+		this->xa = a.x;
+		this->ya = a.y;
+		this->xb = b.x;
+		this->yb = b.y;
+	};
+	float get_max_x() {
+		return xa > xb ? xa : xb;
+	};
+	float get_min_x() {
+		return xa > xb ? xb : xa;
+	};
+	float get_max_y() {
+		return ya > yb ? ya : yb;
+	};
+	float get_min_y() {
+		return ya > yb ? yb : ya;
+	};
+};
+
+bool is_intersect(Line myline1, Line myline2);
+
+float diagonal_distance(Position point1, Position point2);

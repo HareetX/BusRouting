@@ -13,6 +13,7 @@ public:
 	HananEdge* adjvex;
 
 	float weight;
+	vector<int> conflict_id;
 
 	RoutingEdge* inverse_edge;
 
@@ -42,7 +43,7 @@ public:
 
 	int capacity;
 
-	vector<RoutingEdge*> adjacent_edges;
+	vector<RoutingEdge*> adjacent_edges[2];
 
 	EdgeType edge_type;
 
@@ -52,10 +53,16 @@ public:
 	HananEdge* dynamic_graph_lchild;
 	HananEdge* dynamic_graph_rchild;
 
+	Position center_position();
+
 	bool is_extended_adjvex(HananEdge* edge);
 
 	bool is_leaf_node();
 	bool is_root_node();
+
+	void leaf_node_list(vector<HananEdge*>& edge_list);
+	HananEdge* root_node_edge();
+
 	void split2child();
 
 private:
@@ -78,7 +85,7 @@ public:
 
 	void disassemble_edge(map<float, vector<HorizontalEdge*>>& horizontal_edges_map);
 
-	void initial_adjacent_edges();
+	//void initial_adjacent_edges();
 
 	friend bool HorizontalCompLess(const HorizontalEdge* a, const HorizontalEdge* b);
 	friend bool HorizontalVertexCompLess(const Vertex* a, const Vertex* b);
@@ -106,7 +113,7 @@ public:
 
 	void disassemble_edge(map<float, vector<VerticalEdge*>>& vertical_edges_map);
 
-	void initial_adjacent_edges();
+	//void initial_adjacent_edges();
 
 	friend bool VerticalCompLess(const VerticalEdge* a, const VerticalEdge* b);
 	friend bool VerticalVertexCompLess(const Vertex* a, const Vertex* b);
