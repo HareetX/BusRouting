@@ -1,5 +1,6 @@
 #pragma once
 #include <queue>
+#include <fstream>
 #include "HananEdge.h"
 
 class AStarNode
@@ -30,9 +31,11 @@ struct cmp1 {
 class AStarRouter
 {
 public:
-	void a_star_router(HananEdge* start_edge, HananEdge* end_edge, vector<HananEdge*>& path);
+	void a_star_router(HananEdge* start_edge, HananEdge* end_edge, float width, vector<HananEdge*>& path);
 
 private:
-
+	void create_path_file(ofstream& fout, string filename = "pathfile.txt");
+	void write_path_file(ofstream& fout, AStarNode* current);
+	void close_path_file(ofstream& fout);
 };
 

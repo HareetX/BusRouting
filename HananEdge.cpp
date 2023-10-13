@@ -20,9 +20,9 @@ bool VerticalVertexCompLess(const Vertex* a, const Vertex* b)
 	return a->position.y < b->position.y;
 }
 
-bool HorizontalEdge::is_inner_vertex(Vertex* vertex)
+bool HorizontalEdge::is_inner_vertex(Position vertex_pos)
 {
-	return this->vertexs[0]->position.x < vertex->position.x&& vertex->position.x < this->vertexs[1]->position.x;
+	return this->vertexs[0]->position.x < vertex_pos.x && vertex_pos.x < this->vertexs[1]->position.x;
 }
 
 void HorizontalEdge::add_inner_vertex(Vertex* vertex)
@@ -44,7 +44,7 @@ void HorizontalEdge::disassemble_edge(map<float, vector<HorizontalEdge*>>& horiz
 	for (auto vertex : this->inner_vertexs)
 	{
 		vertex2 = vertex;
-		HorizontalEdge* edge = new HorizontalEdge(vertex1, vertex2, 0, this->edge_type);
+		HorizontalEdge* edge = new HorizontalEdge(vertex1, vertex2, vertex2->position.x - vertex1->position.x, this->edge_type);
 		// associate vertex and edge
 		vertex1->edges[1] = edge;  // right edge of vertex1
 		vertex2->edges[3] = edge;  // left  edge of vertex2
@@ -53,7 +53,7 @@ void HorizontalEdge::disassemble_edge(map<float, vector<HorizontalEdge*>>& horiz
 		vertex1 = vertex;
 	}
 	vertex2 = this->vertexs[1];
-	HorizontalEdge* edge = new HorizontalEdge(vertex1, vertex2, 0, this->edge_type);
+	HorizontalEdge* edge = new HorizontalEdge(vertex1, vertex2, vertex2->position.x - vertex1->position.x, this->edge_type);
 	// associate vertex and edge
 	vertex1->edges[1] = edge;  // right edge of vertex1
 	vertex2->edges[3] = edge;  // left  edge of vertex2
@@ -141,9 +141,9 @@ void HorizontalEdge::disassemble_edge(map<float, vector<HorizontalEdge*>>& horiz
 //	}
 //}
 
-bool VerticalEdge::is_inner_vertex(Vertex* vertex)
+bool VerticalEdge::is_inner_vertex(Position vertex_pos)
 {
-	return this->vertexs[0]->position.y < vertex->position.y&& vertex->position.y < this->vertexs[1]->position.y;
+	return this->vertexs[0]->position.y < vertex_pos.y && vertex_pos.y < this->vertexs[1]->position.y;
 }
 
 void VerticalEdge::add_inner_vertex(Vertex* vertex)
@@ -165,7 +165,7 @@ void VerticalEdge::disassemble_edge(map<float, vector<VerticalEdge*>>& vertical_
 	for (auto vertex : this->inner_vertexs)
 	{
 		vertex2 = vertex;
-		VerticalEdge* edge = new VerticalEdge(vertex1, vertex2, 0, this->edge_type);
+		VerticalEdge* edge = new VerticalEdge(vertex1, vertex2, vertex2->position.y - vertex1->position.y, this->edge_type);
 		// associate vertex and edge
 		vertex1->edges[2] = edge;  // down edge of vertex1
 		vertex2->edges[0] = edge;  // up   edge of vertex2
@@ -174,7 +174,7 @@ void VerticalEdge::disassemble_edge(map<float, vector<VerticalEdge*>>& vertical_
 		vertex1 = vertex;
 	}
 	vertex2 = this->vertexs[1];
-	VerticalEdge* edge = new VerticalEdge(vertex1, vertex2, 0, this->edge_type);
+	VerticalEdge* edge = new VerticalEdge(vertex1, vertex2, vertex2->position.y - vertex1->position.y, this->edge_type);
 	// associate vertex and edge
 	vertex1->edges[2] = edge;  // down edge of vertex1
 	vertex2->edges[0] = edge;  // up   edge of vertex2
@@ -348,16 +348,18 @@ HananEdge* HananEdge::root_node_edge()
 	return root_edge;
 }
 
-void HananEdge::split2child()
+void HananEdge::split2child(float width)
 {
 	Vertex* center_vertex = new Vertex((this->vertexs[0]->position.x + this->vertexs[1]->position.x) / (float)2.0, (this->vertexs[0]->position.y + this->vertexs[1]->position.y) / (float)2.0);
 	this->inner_center_vertexs.push_back(center_vertex);
 
-	HananEdge* lchild = new HananEdge(this->vertexs[0], center_vertex, this->capacity, this->edge_type, this);
+	this->root_node_edge()->capacity -= width;
+
+	HananEdge* lchild = new HananEdge(this->vertexs[0], center_vertex, -1, this->edge_type, this);
 	lchild->cells[0] = this->cells[0];
 	lchild->cells[1] = this->cells[1];
 	
-	HananEdge* rchild = new HananEdge(center_vertex, this->vertexs[1], this->capacity, this->edge_type, this);
+	HananEdge* rchild = new HananEdge(center_vertex, this->vertexs[1], -1, this->edge_type, this);
 	rchild->cells[0] = this->cells[0];
 	rchild->cells[1] = this->cells[1];
 	

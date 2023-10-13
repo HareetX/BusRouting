@@ -20,7 +20,7 @@ bool VerticalCompLess2(const ComponentVertex* vertex, const VerticalEdge* edge)
 	return vertex->position.x < edge->vertical_coord;
 }
 
-HananRoutingGraph::HananRoutingGraph(float board[2][2], vector<float(*)[2]>& component_list)
+HananRoutingGraph::HananRoutingGraph(Position board[2], vector<Position*>& component_list)
 {
 	// Initial Board
 	this->initialBoard(board[0], board[1]);
@@ -32,13 +32,13 @@ HananRoutingGraph::HananRoutingGraph(float board[2][2], vector<float(*)[2]>& com
 	this->initialComponent(component_list[3][0], component_list[3][1]);
 
 	// Print the Initial Grid Message
-	this->printHananGrid();
+	//this->printHananGrid();
 
 	// Generate Hanan Grid
 	this->generateHananGrid();
 
 	// Print the Hanan Grid Message
-	this->printHananGrid();
+	//this->printHananGrid();
 
 	// Initial Routing Graph
 	this->generateHananRoutingGraph();
@@ -47,13 +47,13 @@ HananRoutingGraph::HananRoutingGraph(float board[2][2], vector<float(*)[2]>& com
 	this->printRoutingGraph();
 }
 
-void HananRoutingGraph::initialBoard(float boundary_point_1[2], float boundary_point_2[2])
+void HananRoutingGraph::initialBoard(Position boundary_point_1, Position boundary_point_2)
 {
 	// Initialize VertexList
-	HananVertex* point1 = new HananVertex(*boundary_point_1, *(boundary_point_1 + 1));
-	HananVertex* point2 = new HananVertex(*boundary_point_2, *(boundary_point_1 + 1));
-	HananVertex* point3 = new HananVertex(*boundary_point_1, *(boundary_point_2 + 1));
-	HananVertex* point4 = new HananVertex(*boundary_point_2, *(boundary_point_2 + 1));
+	HananVertex* point1 = new HananVertex(boundary_point_1.x, boundary_point_1.y);
+	HananVertex* point2 = new HananVertex(boundary_point_2.x, boundary_point_1.y);
+	HananVertex* point3 = new HananVertex(boundary_point_1.x, boundary_point_2.y);
+	HananVertex* point4 = new HananVertex(boundary_point_2.x, boundary_point_2.y);
 	this->VertexList.push_back(point1);
 	this->VertexList.push_back(point2);
 	this->VertexList.push_back(point3);
@@ -71,13 +71,13 @@ void HananRoutingGraph::initialBoard(float boundary_point_1[2], float boundary_p
 	this->VerticalEdgeList.insert(lower_bound(this->VerticalEdgeList.begin(), this->VerticalEdgeList.end(), edge4, VerticalCompLess), edge4);
 }
 
-void HananRoutingGraph::initialComponent(float boundary_point_1[2], float boundary_point_2[2])
+void HananRoutingGraph::initialComponent(Position boundary_point_1, Position boundary_point_2)
 {
 	// Initialize VertexList
-	HananVertex* point1 = new ComponentVertex(*boundary_point_1, *(boundary_point_1 + 1), upleft);
-	HananVertex* point2 = new ComponentVertex(*boundary_point_2, *(boundary_point_1 + 1), upright);
-	HananVertex* point3 = new ComponentVertex(*boundary_point_1, *(boundary_point_2 + 1), downleft);
-	HananVertex* point4 = new ComponentVertex(*boundary_point_2, *(boundary_point_2 + 1), downright);
+	HananVertex* point1 = new ComponentVertex(boundary_point_1.x, boundary_point_1.y, upleft);
+	HananVertex* point2 = new ComponentVertex(boundary_point_2.x, boundary_point_1.y, upright);
+	HananVertex* point3 = new ComponentVertex(boundary_point_1.x, boundary_point_2.y, downleft);
+	HananVertex* point4 = new ComponentVertex(boundary_point_2.x, boundary_point_2.y, downright);
 	this->VertexList.push_back(point1);
 	this->VertexList.push_back(point2);
 	this->VertexList.push_back(point3);
@@ -137,7 +137,7 @@ void HananRoutingGraph::generateHananGrid()
 
 					break;
 				}
-				else if ((*it)->is_inner_vertex(component_vertex))
+				else if ((*it)->is_inner_vertex(component_vertex->position))
 				{
 					HananVertex* vertex = new HananVertex(component_vertex->position.x, (*it)->horizontal_coord);
 					// Add the new inner vertex to the edge
@@ -237,7 +237,7 @@ void HananRoutingGraph::generateHananGrid()
 
 					break;
 				}
-				else if ((*it)->is_inner_vertex(component_vertex))
+				else if ((*it)->is_inner_vertex(component_vertex->position))
 				{
 					HananVertex* vertex = new HananVertex((*it)->vertical_coord, component_vertex->position.y);
 					// Add the new inner vertex to the edge
@@ -336,7 +336,7 @@ void HananRoutingGraph::generateHananGrid()
 
 					break;
 				}
-				else if ((*it)->is_inner_vertex(component_vertex))
+				else if ((*it)->is_inner_vertex(component_vertex->position))
 				{
 					HananVertex* vertex = new HananVertex(component_vertex->position.x, (*it)->horizontal_coord);
 					// Add the new inner vertex to the edge
@@ -436,7 +436,7 @@ void HananRoutingGraph::generateHananGrid()
 
 					break;
 				}
-				else if ((*it)->is_inner_vertex(component_vertex))
+				else if ((*it)->is_inner_vertex(component_vertex->position))
 				{
 					HananVertex* vertex = new HananVertex((*it)->vertical_coord, component_vertex->position.y);
 					// Add the new inner vertex to the edge
@@ -875,15 +875,17 @@ HananCell* HananRoutingGraph::findHananCell(HananEdge* edge1, HananEdge* edge2)
 	return nullptr;
 }
 
-void HananRoutingGraph::updateRoutingGraph(vector<HananEdge*>& path, int bus_id)
+void HananRoutingGraph::updateRoutingGraph(vector<HananEdge*>& path, Position start, Position end, float width, int bus_id)
 {
 	// Store the path
 	this->pathList.push_back(path);
 
 	// Generate the empty children edges of the path edges
+	path.front()->root_node_edge()->inner_bus_terminals.push_back(end);
+	path.back()->root_node_edge()->inner_bus_terminals.push_back(start);
 	for (auto& edge : path)
 	{
-		edge->split2child();
+		edge->split2child(width);
 	}
 	
 	int path_size = path.size();
@@ -924,364 +926,133 @@ void HananRoutingGraph::updateRoutingGraph(vector<HananEdge*>& path, int bus_id)
 					s.push(nd->dynamic_graph_lchild);
 			}
 		}
-		/*for (auto& routing_edge : ((HananEdge*)(cell->edges[0]))->adjacent_edges[1])
-		{
-			delete routing_edge;
-		}
-		((HananEdge*)(cell->edges[0]))->adjacent_edges[1].clear();*/
 		
-		/*for (auto& routing_edge : ((HananEdge*)(cell->edges[1]))->adjacent_edges[0])
-		{
-			delete routing_edge;
-		}
-		((HananEdge*)(cell->edges[1]))->adjacent_edges[0].clear();*/
-		
-		/*for (auto& routing_edge : ((HananEdge*)(cell->edges[2]))->adjacent_edges[0])
-		{
-			delete routing_edge;
-		}
-		((HananEdge*)(cell->edges[2]))->adjacent_edges[0].clear();*/
-		
-		/*for (auto& routing_edge : ((HananEdge*)(cell->edges[3]))->adjacent_edges[1])
-		{
-			delete routing_edge;
-		}
-		((HananEdge*)(cell->edges[3]))->adjacent_edges[1].clear();*/
-
+		/*
+		* The edge nodes of the hanan edges
+		* 0 - up ; 1 - right ; 2 - down ; 3 - left
+		*/
 		vector<HananEdge*> hanan_edges[4];
 		((HananEdge*)(cell->edges[0]))->leaf_node_list(hanan_edges[0]);
 		((HananEdge*)(cell->edges[1]))->leaf_node_list(hanan_edges[1]);
 		((HananEdge*)(cell->edges[2]))->leaf_node_list(hanan_edges[2]);
 		((HananEdge*)(cell->edges[3]))->leaf_node_list(hanan_edges[3]);
 
-		for (auto& node : hanan_edges[0])
+		for (int i = 0; i < 4; i++)
 		{
-			for (auto& edge_node : hanan_edges[1])
+			int direct_1 = 0;
+			if (i == 0 or i == 3)
 			{
-				if (!(node->is_extended_adjvex(edge_node)))
-				{
-					float routing_weight = diagonal_distance(node->root_node_edge()->center_position(), edge_node->root_node_edge()->center_position());
-
-					RoutingEdge* adjacent_edge = new RoutingEdge(edge_node, routing_weight);
-					node->adjacent_edges[1].push_back(adjacent_edge);
-
-					adjacent_edge = new RoutingEdge(node, routing_weight);
-					edge_node->adjacent_edges[0].push_back(adjacent_edge);
-
-					Line routing_line = Line(node->center_position(), edge_node->center_position());
-					for (auto& path_l : cell->path_line)
-					{
-						if (is_intersect(path_l.first, routing_line))
-						{
-							node->adjacent_edges[1].back()->conflict_id.push_back(path_l.second);
-							edge_node->adjacent_edges[0].back()->conflict_id.push_back(path_l.second);
-						}
-					}
-
-					node->adjacent_edges[1].back()->inverse_edge = edge_node->adjacent_edges[0].back();
-					edge_node->adjacent_edges[0].back()->inverse_edge = node->adjacent_edges[1].back();
-				}
+				direct_1 = 1;
 			}
-			for (auto& edge_node : hanan_edges[2])
+			for (auto& node : hanan_edges[i])
 			{
-				if (!(node->is_extended_adjvex(edge_node)))
+				for (int j = 1; j < 4; j++)
 				{
-					float routing_weight = diagonal_distance(node->root_node_edge()->center_position(), edge_node->root_node_edge()->center_position());
-
-					RoutingEdge* adjacent_edge = new RoutingEdge(edge_node, routing_weight);
-					node->adjacent_edges[1].push_back(adjacent_edge);
-
-					adjacent_edge = new RoutingEdge(node, routing_weight);
-					edge_node->adjacent_edges[0].push_back(adjacent_edge);
-
-					Line routing_line = Line(node->center_position(), edge_node->center_position());
-					for (auto& path_l : cell->path_line)
+					int k = (i + j) % 4;
+					int direct_2 = 0;
+					if (k == 0 or k == 3)
 					{
-						if (is_intersect(path_l.first, routing_line))
+						direct_2 = 1;
+					}
+					for (auto& edge_node : hanan_edges[k])
+					{
+						if (!(node->is_extended_adjvex(edge_node)))
 						{
-							node->adjacent_edges[1].back()->conflict_id.push_back(path_l.second);
-							edge_node->adjacent_edges[0].back()->conflict_id.push_back(path_l.second);
+							float routing_weight = diagonal_distance(node->root_node_edge()->center_position(), edge_node->root_node_edge()->center_position());
+
+							RoutingEdge* adjacent_edge = new RoutingEdge(edge_node, routing_weight);
+							node->adjacent_edges[direct_1].push_back(adjacent_edge);
+
+							adjacent_edge = new RoutingEdge(node, routing_weight);
+							edge_node->adjacent_edges[direct_2].push_back(adjacent_edge);
+
+							Line routing_line = Line(node->center_position(), edge_node->center_position());
+							for (auto& path_l : cell->path_line)
+							{
+								if (is_intersect(path_l.first, routing_line))
+								{
+									node->adjacent_edges[direct_1].back()->conflict_id.push_back(path_l.second);
+									edge_node->adjacent_edges[direct_2].back()->conflict_id.push_back(path_l.second);
+								}
+							}
+
+							node->adjacent_edges[direct_1].back()->inverse_edge = edge_node->adjacent_edges[direct_2].back();
+							edge_node->adjacent_edges[direct_2].back()->inverse_edge = node->adjacent_edges[direct_1].back();
 						}
 					}
-
-					node->adjacent_edges[1].back()->inverse_edge = edge_node->adjacent_edges[0].back();
-					edge_node->adjacent_edges[0].back()->inverse_edge = node->adjacent_edges[1].back();
-				}
-			}
-			for (auto& edge_node : hanan_edges[3])
-			{
-				if (!(node->is_extended_adjvex(edge_node)))
-				{
-					float routing_weight = diagonal_distance(node->root_node_edge()->center_position(), edge_node->root_node_edge()->center_position());
-
-					RoutingEdge* adjacent_edge = new RoutingEdge(edge_node, routing_weight);
-					node->adjacent_edges[1].push_back(adjacent_edge);
-
-					adjacent_edge = new RoutingEdge(node, routing_weight);
-					edge_node->adjacent_edges[1].push_back(adjacent_edge);
-
-					Line routing_line = Line(node->center_position(), edge_node->center_position());
-					for (auto& path_l : cell->path_line)
-					{
-						if (is_intersect(path_l.first, routing_line))
-						{
-							node->adjacent_edges[1].back()->conflict_id.push_back(path_l.second);
-							edge_node->adjacent_edges[1].back()->conflict_id.push_back(path_l.second);
-						}
-					}
-
-					node->adjacent_edges[1].back()->inverse_edge = edge_node->adjacent_edges[1].back();
-					edge_node->adjacent_edges[1].back()->inverse_edge = node->adjacent_edges[1].back();
-				}
-			}
-		}
-
-		for (auto& node : hanan_edges[1])
-		{
-			for (auto& edge_node : hanan_edges[2])
-			{
-				if (!(node->is_extended_adjvex(edge_node)))
-				{
-					float routing_weight = diagonal_distance(node->root_node_edge()->center_position(), edge_node->root_node_edge()->center_position());
-
-					RoutingEdge* adjacent_edge = new RoutingEdge(edge_node, routing_weight);
-					node->adjacent_edges[0].push_back(adjacent_edge);
-
-					adjacent_edge = new RoutingEdge(node, routing_weight);
-					edge_node->adjacent_edges[0].push_back(adjacent_edge);
-
-					Line routing_line = Line(node->center_position(), edge_node->center_position());
-					for (auto& path_l : cell->path_line)
-					{
-						if (is_intersect(path_l.first, routing_line))
-						{
-							node->adjacent_edges[0].back()->conflict_id.push_back(path_l.second);
-							edge_node->adjacent_edges[0].back()->conflict_id.push_back(path_l.second);
-						}
-					}
-
-					node->adjacent_edges[0].back()->inverse_edge = edge_node->adjacent_edges[0].back();
-					edge_node->adjacent_edges[0].back()->inverse_edge = node->adjacent_edges[0].back();
-				}
-			}
-			for (auto& edge_node : hanan_edges[3])
-			{
-				if (!(node->is_extended_adjvex(edge_node)))
-				{
-					float routing_weight = diagonal_distance(node->root_node_edge()->center_position(), edge_node->root_node_edge()->center_position());
-
-					RoutingEdge* adjacent_edge = new RoutingEdge(edge_node, routing_weight);
-					node->adjacent_edges[0].push_back(adjacent_edge);
-
-					adjacent_edge = new RoutingEdge(node, routing_weight);
-					edge_node->adjacent_edges[1].push_back(adjacent_edge);
-
-					Line routing_line = Line(node->center_position(), edge_node->center_position());
-					for (auto& path_l : cell->path_line)
-					{
-						if (is_intersect(path_l.first, routing_line))
-						{
-							node->adjacent_edges[0].back()->conflict_id.push_back(path_l.second);
-							edge_node->adjacent_edges[1].back()->conflict_id.push_back(path_l.second);
-						}
-					}
-
-					node->adjacent_edges[0].back()->inverse_edge = edge_node->adjacent_edges[1].back();
-					edge_node->adjacent_edges[1].back()->inverse_edge = node->adjacent_edges[0].back();
-				}
-			}
-			for (auto& edge_node : hanan_edges[0])
-			{
-				if (!(node->is_extended_adjvex(edge_node)))
-				{
-					float routing_weight = diagonal_distance(node->root_node_edge()->center_position(), edge_node->root_node_edge()->center_position());
-
-					RoutingEdge* adjacent_edge = new RoutingEdge(edge_node, routing_weight);
-					node->adjacent_edges[0].push_back(adjacent_edge);
-
-					adjacent_edge = new RoutingEdge(node, routing_weight);
-					edge_node->adjacent_edges[1].push_back(adjacent_edge);
-
-					Line routing_line = Line(node->center_position(), edge_node->center_position());
-					for (auto& path_l : cell->path_line)
-					{
-						if (is_intersect(path_l.first, routing_line))
-						{
-							node->adjacent_edges[0].back()->conflict_id.push_back(path_l.second);
-							edge_node->adjacent_edges[1].back()->conflict_id.push_back(path_l.second);
-						}
-					}
-
-					node->adjacent_edges[0].back()->inverse_edge = edge_node->adjacent_edges[1].back();
-					edge_node->adjacent_edges[1].back()->inverse_edge = node->adjacent_edges[0].back();
-				}
-			}
-		}
-
-		for (auto& node : hanan_edges[2])
-		{
-			for (auto& edge_node : hanan_edges[3])
-			{
-				if (!(node->is_extended_adjvex(edge_node)))
-				{
-					float routing_weight = diagonal_distance(node->root_node_edge()->center_position(), edge_node->root_node_edge()->center_position());
-
-					RoutingEdge* adjacent_edge = new RoutingEdge(edge_node, routing_weight);
-					node->adjacent_edges[0].push_back(adjacent_edge);
-
-					adjacent_edge = new RoutingEdge(node, routing_weight);
-					edge_node->adjacent_edges[1].push_back(adjacent_edge);
-
-					Line routing_line = Line(node->center_position(), edge_node->center_position());
-					for (auto& path_l : cell->path_line)
-					{
-						if (is_intersect(path_l.first, routing_line))
-						{
-							node->adjacent_edges[0].back()->conflict_id.push_back(path_l.second);
-							edge_node->adjacent_edges[1].back()->conflict_id.push_back(path_l.second);
-						}
-					}
-
-					node->adjacent_edges[0].back()->inverse_edge = edge_node->adjacent_edges[1].back();
-					edge_node->adjacent_edges[1].back()->inverse_edge = node->adjacent_edges[0].back();
-				}
-			}
-			for (auto& edge_node : hanan_edges[0])
-			{
-				if (!(node->is_extended_adjvex(edge_node)))
-				{
-					float routing_weight = diagonal_distance(node->root_node_edge()->center_position(), edge_node->root_node_edge()->center_position());
-
-					RoutingEdge* adjacent_edge = new RoutingEdge(edge_node, routing_weight);
-					node->adjacent_edges[0].push_back(adjacent_edge);
-
-					adjacent_edge = new RoutingEdge(node, routing_weight);
-					edge_node->adjacent_edges[1].push_back(adjacent_edge);
-
-					Line routing_line = Line(node->center_position(), edge_node->center_position());
-					for (auto& path_l : cell->path_line)
-					{
-						if (is_intersect(path_l.first, routing_line))
-						{
-							node->adjacent_edges[0].back()->conflict_id.push_back(path_l.second);
-							edge_node->adjacent_edges[1].back()->conflict_id.push_back(path_l.second);
-						}
-					}
-
-					node->adjacent_edges[0].back()->inverse_edge = edge_node->adjacent_edges[1].back();
-					edge_node->adjacent_edges[1].back()->inverse_edge = node->adjacent_edges[0].back();
-				}
-			}
-			for (auto& edge_node : hanan_edges[1])
-			{
-				if (!(node->is_extended_adjvex(edge_node)))
-				{
-					float routing_weight = diagonal_distance(node->root_node_edge()->center_position(), edge_node->root_node_edge()->center_position());
-
-					RoutingEdge* adjacent_edge = new RoutingEdge(edge_node, routing_weight);
-					node->adjacent_edges[0].push_back(adjacent_edge);
-
-					adjacent_edge = new RoutingEdge(node, routing_weight);
-					edge_node->adjacent_edges[0].push_back(adjacent_edge);
-
-					Line routing_line = Line(node->center_position(), edge_node->center_position());
-					for (auto& path_l : cell->path_line)
-					{
-						if (is_intersect(path_l.first, routing_line))
-						{
-							node->adjacent_edges[0].back()->conflict_id.push_back(path_l.second);
-							edge_node->adjacent_edges[0].back()->conflict_id.push_back(path_l.second);
-						}
-					}
-
-					node->adjacent_edges[0].back()->inverse_edge = edge_node->adjacent_edges[0].back();
-					edge_node->adjacent_edges[0].back()->inverse_edge = node->adjacent_edges[0].back();
-				}
-			}
-		}
-
-		for (auto& node : hanan_edges[3])
-		{
-			for (auto& edge_node : hanan_edges[0])
-			{
-				if (!(node->is_extended_adjvex(edge_node)))
-				{
-					float routing_weight = diagonal_distance(node->root_node_edge()->center_position(), edge_node->root_node_edge()->center_position());
-
-					RoutingEdge* adjacent_edge = new RoutingEdge(edge_node, routing_weight);
-					node->adjacent_edges[1].push_back(adjacent_edge);
-
-					adjacent_edge = new RoutingEdge(node, routing_weight);
-					edge_node->adjacent_edges[1].push_back(adjacent_edge);
-
-					Line routing_line = Line(node->center_position(), edge_node->center_position());
-					for (auto& path_l : cell->path_line)
-					{
-						if (is_intersect(path_l.first, routing_line))
-						{
-							node->adjacent_edges[1].back()->conflict_id.push_back(path_l.second);
-							edge_node->adjacent_edges[1].back()->conflict_id.push_back(path_l.second);
-						}
-					}
-
-					node->adjacent_edges[1].back()->inverse_edge = edge_node->adjacent_edges[1].back();
-					edge_node->adjacent_edges[1].back()->inverse_edge = node->adjacent_edges[1].back();
-				}
-			}
-			for (auto& edge_node : hanan_edges[1])
-			{
-				if (!(node->is_extended_adjvex(edge_node)))
-				{
-					float routing_weight = diagonal_distance(node->root_node_edge()->center_position(), edge_node->root_node_edge()->center_position());
-
-					RoutingEdge* adjacent_edge = new RoutingEdge(edge_node, routing_weight);
-					node->adjacent_edges[1].push_back(adjacent_edge);
-
-					adjacent_edge = new RoutingEdge(node, routing_weight);
-					edge_node->adjacent_edges[0].push_back(adjacent_edge);
-
-					Line routing_line = Line(node->center_position(), edge_node->center_position());
-					for (auto& path_l : cell->path_line)
-					{
-						if (is_intersect(path_l.first, routing_line))
-						{
-							node->adjacent_edges[1].back()->conflict_id.push_back(path_l.second);
-							edge_node->adjacent_edges[0].back()->conflict_id.push_back(path_l.second);
-						}
-					}
-
-					node->adjacent_edges[1].back()->inverse_edge = edge_node->adjacent_edges[0].back();
-					edge_node->adjacent_edges[0].back()->inverse_edge = node->adjacent_edges[1].back();
-				}
-			}
-			for (auto& edge_node : hanan_edges[2])
-			{
-				if (!(node->is_extended_adjvex(edge_node)))
-				{
-					float routing_weight = diagonal_distance(node->root_node_edge()->center_position(), edge_node->root_node_edge()->center_position());
-
-					RoutingEdge* adjacent_edge = new RoutingEdge(edge_node, routing_weight);
-					node->adjacent_edges[1].push_back(adjacent_edge);
-
-					adjacent_edge = new RoutingEdge(node, routing_weight);
-					edge_node->adjacent_edges[0].push_back(adjacent_edge);
-
-					Line routing_line = Line(node->center_position(), edge_node->center_position());
-					for (auto& path_l : cell->path_line)
-					{
-						if (is_intersect(path_l.first, routing_line))
-						{
-							node->adjacent_edges[1].back()->conflict_id.push_back(path_l.second);
-							edge_node->adjacent_edges[0].back()->conflict_id.push_back(path_l.second);
-						}
-					}
-
-					node->adjacent_edges[1].back()->inverse_edge = edge_node->adjacent_edges[0].back();
-					edge_node->adjacent_edges[0].back()->inverse_edge = node->adjacent_edges[1].back();
 				}
 			}
 		}
 	}
+}
+
+HananEdge* HananRoutingGraph::findBusTerminalEdge(Position bus_terminal)
+{
+	if (this->HorizontalEdgeMap.find(bus_terminal.y) != this->HorizontalEdgeMap.end())
+	{
+		int edge_num = this->HorizontalEdgeMap[bus_terminal.y].size();
+		for (int i = edge_num - 1; i >= 0; i--)
+		{
+			HorizontalEdge* edge = this->HorizontalEdgeMap[bus_terminal.y][i];
+			if (edge->edge_type == ComponentBoundary and edge->is_inner_vertex(bus_terminal))
+			{
+				if (edge->is_leaf_node())
+				{
+					return edge;
+				}
+				else
+				{
+					HananEdge* child_edge = edge;
+					for (auto& pos : edge->inner_bus_terminals)
+					{
+						if (bus_terminal.x < pos.x)
+						{
+							child_edge = child_edge->dynamic_graph_lchild;
+						}
+						else
+						{
+							child_edge = child_edge->dynamic_graph_rchild;
+						}
+					}
+					return child_edge;
+				}
+			}
+		}
+	}
+
+	if (this->VerticalEdgeMap.find(bus_terminal.x) != this->VerticalEdgeMap.end())
+	{
+		int edge_num = this->VerticalEdgeMap[bus_terminal.x].size();
+		for (int i = edge_num - 1; i >= 0; i--)
+		{
+			VerticalEdge* edge = this->VerticalEdgeMap[bus_terminal.x][i];
+			if (edge->edge_type == ComponentBoundary and edge->is_inner_vertex(bus_terminal))
+			{
+				if (edge->is_leaf_node())
+				{
+					return edge;
+				}
+				else
+				{
+					HananEdge* child_edge = edge;
+					for (auto& pos : edge->inner_bus_terminals)
+					{
+						if (bus_terminal.y < pos.y)
+						{
+							child_edge = child_edge->dynamic_graph_lchild;
+						}
+						else
+						{
+							child_edge = child_edge->dynamic_graph_rchild;
+						}
+					}
+					return child_edge;
+				}
+			}
+		}
+	}
+
+	return nullptr;
 }
 
 void HananRoutingGraph::printHananGrid()

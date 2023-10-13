@@ -33,6 +33,12 @@
     <ClInclude Include="HananRoutingGraph.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="BusRoutingParameters.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Bus.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="HananVertex.cpp">
@@ -54,6 +60,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="HananRoutingGraph.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="BusRoutingParameters.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Bus.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

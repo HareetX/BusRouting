@@ -31,23 +31,24 @@ enum EdgeType
 class HananEdge : public Edge
 {
 public:
-	HananEdge(Vertex* vertex_1, Vertex* vertex_2, int max_capacity, EdgeType type) : Edge(vertex_1, vertex_2)
+	HananEdge(Vertex* vertex_1, Vertex* vertex_2, float max_capacity, EdgeType type) : Edge(vertex_1, vertex_2)
 	{
 		capacity = max_capacity; edge_type = type; dynamic_graph_parent = NULL; dynamic_graph_lchild = NULL; dynamic_graph_rchild = NULL;
 	};
-	HananEdge(Vertex* vertex_1, Vertex* vertex_2, int max_capacity, EdgeType type, HananEdge* parent) : Edge(vertex_1, vertex_2)
+	HananEdge(Vertex* vertex_1, Vertex* vertex_2, float max_capacity, EdgeType type, HananEdge* parent) : Edge(vertex_1, vertex_2)
 	{
 		capacity = max_capacity; edge_type = type; dynamic_graph_parent = parent; dynamic_graph_lchild = NULL; dynamic_graph_rchild = NULL;
 	};
 	~HananEdge() {};
 
-	int capacity;
+	float capacity;
 
 	vector<RoutingEdge*> adjacent_edges[2];
 
 	EdgeType edge_type;
 
 	vector<Vertex*> inner_center_vertexs;
+	vector<Position> inner_bus_terminals;
 
 	HananEdge* dynamic_graph_parent;
 	HananEdge* dynamic_graph_lchild;
@@ -63,7 +64,7 @@ public:
 	void leaf_node_list(vector<HananEdge*>& edge_list);
 	HananEdge* root_node_edge();
 
-	void split2child();
+	void split2child(float width);
 
 private:
 
@@ -79,7 +80,7 @@ public:
 	float horizontal_coord;
 	vector<Vertex*> inner_vertexs;
 
-	bool is_inner_vertex(Vertex* vertex);
+	bool is_inner_vertex(Position vertex_pos);
 
 	void add_inner_vertex(Vertex* vertex);
 
@@ -107,7 +108,7 @@ public:
 	float vertical_coord;
 	vector<Vertex*> inner_vertexs;
 
-	bool is_inner_vertex(Vertex* vertex);
+	bool is_inner_vertex(Position vertex_pos);
 
 	void add_inner_vertex(Vertex* vertex);
 

@@ -144,6 +144,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="AStarRouter.h" />
+    <ClInclude Include="Bus.h" />
+    <ClInclude Include="BusRoutingParameters.h" />
     <ClInclude Include="HananCell.h" />
     <ClInclude Include="HananEdge.h" />
     <ClInclude Include="HananRoutingGraph.h" />
@@ -152,6 +154,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AStarRouter.cpp" />
+    <ClCompile Include="Bus.cpp" />
+    <ClCompile Include="BusRoutingParameters.cpp" />
     <ClCompile Include="HananCell.cpp" />
     <ClCompile Include="HananEdge.cpp" />
     <ClCompile Include="HananRoutingGraph.cpp" />

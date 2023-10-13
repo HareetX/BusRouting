@@ -24,7 +24,7 @@ bool VerticalCompLess2(const ComponentVertex* vertex, const VerticalEdge* edge);
 class HananRoutingGraph
 {
 public:
-	HananRoutingGraph(float board[2][2], vector<float(*)[2]>& component_list);
+	HananRoutingGraph(Position board[2], vector<Position*>& component_list);
 	
 	vector<HananVertex*> VertexList;
 	vector<ComponentVertex*> ComponentVertexList;
@@ -38,7 +38,9 @@ public:
 
 	vector<vector<HananEdge*>> pathList;
 
-	void updateRoutingGraph(vector<HananEdge*>& path, int bus_id);
+	void updateRoutingGraph(vector<HananEdge*>& path, Position start, Position end, float width, int bus_id);
+
+	HananEdge* findBusTerminalEdge(Position bus_terminal);
 
 	void printHananGrid();
 	void printRoutingGraph();
@@ -46,8 +48,8 @@ public:
 
 private:
 	// Initial the Vertex and Edge of the Board and Component
-	void initialBoard(float boundary_point_1[2], float boundary_point_2[2]);
-	void initialComponent(float boundary_point_1[2], float boundary_point_2[2]);
+	void initialBoard(Position boundary_point_1, Position boundary_point_2);
+	void initialComponent(Position boundary_point_1, Position boundary_point_2);
 
 	// Generate HananGrid from Component Vertex
 	void generateHananGrid();

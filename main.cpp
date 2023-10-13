@@ -1,55 +1,63 @@
 #pragma once
-
+#include "BusRoutingParameters.h"
 #include "HananRoutingGraph.h"
 #include "AStarRouter.h"
 
 int main()
 {
 	// boundary points of the board
-	float board[2][2] = { {0, 0},{36, 27} };
+	Position board[2] = { Position{0, 0},Position{36, 27} };
 	
 	// boundary points of the components
-	vector<float(*)[2]> component_list;
-	
-	float component1[2][2] = { {7, 5}, {12, 8} };
+	vector<Position*> component_list;
+
+	Position component1[2] = { Position{7, 5}, Position{12, 8} };
 	component_list.push_back(component1);
 
-	//float component2[2][2] = { {7, 12}, {21, 17} };
+	//Position component2[2] = { Position{7, 12}, Position{21, 17} };
 	//component_list.push_back(component2);
-	//float component2[2][2] = { {15, 5}, {21, 17} };
+	//Position component2[2] = { Position{15, 5}, Position{21, 17} };
 	//component_list.push_back(component2);
-	float component2[2][2] = { {17, 7}, {21, 12} };
+	Position component2[2] = { Position{17, 7}, Position{21, 12} };
 	component_list.push_back(component2);
 
-	float component3[2][2] = { {7, 15}, {21, 20} };
+	Position component3[2] = { Position{7, 15}, Position{21, 20} };
 	component_list.push_back(component3);
 
-	float component4[2][2] = { {25, 7}, {32, 16} };
+	Position component4[2] = { Position{25, 7}, Position{32, 16} };
 	component_list.push_back(component4);
 
-	// Initial the Routing Graph based on Hanan Grid
-	HananRoutingGraph hanan_routing_graph(board, component_list);
+	BusRoutingParameters parameters(board, component_list);
+	Bus bus1 = Bus(Position{ 7,6 }, Position{ 28,16 }, 2.5, 0);
+	Bus bus2 = Bus(Position{ 21,18 }, Position{ 30,16 }, 1.5, 1);
+	Bus bus3 = Bus(Position{ 17,10 }, Position{ 7,18 }, 3, 2);
+	parameters.add_bus(bus1);
+	parameters.add_bus(bus2);
+	parameters.add_bus(bus3);
 
-	// Find the path by A* Searching
+	// Initial the Routing Graph based on Hanan Grid
+	HananRoutingGraph hanan_routing_graph(parameters.board, parameters.component_list);
+
+	// Global Routing based on A* Searching
 	AStarRouter router;
 	vector<HananEdge*> path;
+	
+	for (auto& bus : parameters.bus_list)
+	{
+		// Find the path by A* Searching
+		router.a_star_router(hanan_routing_graph.findBusTerminalEdge(bus.start), hanan_routing_graph.findBusTerminalEdge(bus.end), bus.width, path);
 
-	router.a_star_router(hanan_routing_graph.VerticalEdgeMap.at(7)[5], hanan_routing_graph.HorizontalEdgeMap.at(16)[2], path);
+		// update the path to the Routing Graph dynamically
+		hanan_routing_graph.updateRoutingGraph(path, bus.start, bus.end, bus.width, 0);
 
-	// update the path to the Routing Graph dynamically
-	hanan_routing_graph.updateRoutingGraph(path, 0);
-
-	//Print Routing Graph with the path;
+		//// Print Routing Graph with the path;
+		//hanan_routing_graph.printRoutingPath();
+	}
+	// Print Routing Graph with the path;
 	hanan_routing_graph.printRoutingPath();
-
-	// Find the path by A* Searching
-	router.a_star_router(hanan_routing_graph.VerticalEdgeMap.at(21)[5], hanan_routing_graph.HorizontalEdgeMap.at(16)[2]->dynamic_graph_rchild, path);
-
-	// update the path to the Routing Graph dynamically
-	hanan_routing_graph.updateRoutingGraph(path, 0);
-
-	//Print Routing Graph with the path;
-	hanan_routing_graph.printRoutingPath();
+	
+	// Store the bus path
+	//parameters.add_path
 
 	return 0;
 }
